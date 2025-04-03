@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Posiciones</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        table { width: 50%; margin: 20px auto; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 10px; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h2>Inscripción de Participantes</h2>
+    <input type="text" id="nombre" placeholder="Nombre del participante">
+    <button onclick="agregarParticipante()">Agregar</button>
+    
+    <h2>Tabla de Posiciones</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Puntos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla"></tbody>
+    </table>
+    
+    <script>
+        let participantes = [];
+        
+        function agregarParticipante() {
+            let nombre = document.getElementById("nombre").value;
+            if (nombre.trim() !== "") {
+                participantes.push({ nombre, puntos: 0 });
+                document.getElementById("nombre").value = "";
+                actualizarTabla();
+            }
+        }
+        
+        function actualizarTabla() {
+            let tabla = document.getElementById("tabla");
+            tabla.innerHTML = "";
+            participantes.forEach((p, index) => {
+                let fila = `<tr>
+                    <td>${p.nombre}</td>
+                    <td>${p.puntos.toFixed(1)}</td>
+                    <td>
+                        <button onclick="modificarPuntos(${index}, 1)">+1</button>
+                        <button onclick="modificarPuntos(${index}, -1)">-1</button>
+                        <button onclick="modificarPuntos(${index}, 0.5)">+0.5</button>
+                        <button onclick="modificarPuntos(${index}, -0.5)">-0.5</button>
+                    </td>
+                </tr>`;
+                tabla.innerHTML += fila;
+            });
+        }
+        
+        function modificarPuntos(index, cambio) {
+            participantes[index].puntos += cambio;
+            actualizarTabla();
+        }
+    </script>
+</body>
+</html>
